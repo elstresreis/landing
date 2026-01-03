@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Porta la màgia dels Reis Mags al mòbil dels teus veïns. Sistema de tracking GPS en temps real per la Cavalcada.">
+    <meta name="keywords" content="Reis Mags, Cavalcada, tracking, GPS, temps real, seguiment">
+    <meta name="author" content="Els Tres Reis">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Els Tres Reis - Seguiment en Temps Real">
+    <meta property="og:description" content="Porta la màgia de la Cavalcada al mòbil dels teus veïns. Seguiment GPS en temps real.">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Els Tres Reis - Seguiment en Temps Real">
+    <meta name="twitter:description" content="Porta la màgia de la Cavalcada al mòbil dels teus veïns. Seguiment GPS en temps real.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <title>Els Tres Reis - Seguiment en Temps Real</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #c41e3a;
+            --primary-dark: #8b1428;
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --dark: #1a1a1a;
+            --light: #faf9f7;
+            --text: #2d3436;
+            --text-light: #636e72;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(196, 30, 58, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 16px 0;
+            transition: all 0.3s ease;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .nav-logo-icon {
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-cta {
+            background: var(--gold);
+            color: var(--dark) !important;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600 !important;
+        }
+
+        .nav-cta:hover {
+            background: var(--gold-light) !important;
+        }
+
+        /* Header Hero */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 160px 20px 120px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '✨';
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.15;
+            top: 25%;
+            left: 10%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        header::after {
+            content: '⭐';
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.15;
+            top: 60%;
+            right: 15%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        header .header-star-1::before {
+            content: '⭐';
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.12;
+            top: 20%;
+            right: 25%;
+            animation: float 7s ease-in-out infinite;
+        }
+
+        header .header-star-2::before {
+            content: '✨';
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.18;
+            top: 70%;
+            left: 20%;
+            animation: float 9s ease-in-out infinite;
+        }
+
+        header .header-star-3::before {
+            content: '⭐';
+            position: absolute;
+            font-size: 1.8rem;
+            opacity: 0.13;
+            top: 40%;
+            right: 8%;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        header .header-star-4::before {
+            content: '✨';
+            position: absolute;
+            font-size: 2.2rem;
+            opacity: 0.16;
+            top: 80%;
+            right: 30%;
+            animation: float 6.5s ease-in-out infinite;
+        }
+
+        header .header-star-5::before {
+            content: '⭐';
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.14;
+            top: 35%;
+            left: 5%;
+            animation: float 8.5s ease-in-out infinite;
+        }
+
+        header .header-star-6::before {
+            content: '✨';
+            position: absolute;
+            font-size: 2.8rem;
+            opacity: 0.11;
+            top: 15%;
+            left: 30%;
+            animation: float 7.5s ease-in-out infinite;
+        }
+
+        header .header-star-7::before {
+            content: '⭐';
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.12;
+            top: 75%;
+            left: 40%;
+            animation: float 6.2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 18px 48px;
+            background: var(--gold);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
+            background: var(--gold-light);
+        }
+
+        /* Sections common */
+        section {
+            padding: 100px 20px;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            color: var(--dark);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Problem Section */
+        .problem {
+            background: white;
+            text-align: center;
+        }
+
+        .problem-text {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .problem-highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            background: linear-gradient(180deg, var(--light) 0%, #f0ebe3 100%);
+        }
+
+        .benefits h2 {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .benefit-card {
+            padding: 36px;
+            border-radius: 20px;
+            background: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(196, 30, 58, 0.12);
+        }
+
+        .benefit-icon {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        .benefit-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: white;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--primary) 100%);
+            z-index: 0;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(196, 30, 58, 0.3);
+            border: 4px solid white;
+        }
+
+        .step h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        .step p {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* CTA Final */
+        .cta-final {
+            padding: 120px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-final::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 50%);
+            animation: shimmer 15s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .cta-final .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-final h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .cta-final p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-large {
+            display: inline-block;
+            padding: 20px 56px;
+            background: var(--gold);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-large:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            background: var(--gold-light);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-brand-icon {
+            font-size: 2rem;
+        }
+
+        .footer-brand-text h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .footer-brand-text p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .footer-contact a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-contact a:hover {
+            opacity: 0.8;
+        }
+
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav .container {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            header {
+                padding: 140px 20px 80px;
+            }
+
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.15rem;
+            }
+
+            section {
+                padding: 70px 20px;
+            }
+
+            section h2 {
+                font-size: 2rem;
+            }
+
+            .problem-text {
+                font-size: 1.1rem;
+            }
+
+            .benefits-grid,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-final h2 {
+                font-size: 2.2rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .hero-cta {
+                padding: 16px 36px;
+                font-size: 1rem;
+            }
+
+            .btn-large {
+                padding: 18px 40px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="#" class="nav-logo">
+                <span class="nav-logo-icon">👑</span>
+                <span>Els Tres Reis</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#beneficis">Beneficis</a></li>
+                <li><a href="#funcionament">Com funciona</a></li>
+                <li><a href="#contact" class="nav-cta">Contacta'ns</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <span class="header-star-1"></span>
+        <span class="header-star-2"></span>
+        <span class="header-star-3"></span>
+        <span class="header-star-4"></span>
+        <span class="header-star-5"></span>
+        <span class="header-star-6"></span>
+        <span class="header-star-7"></span>
+        <div class="container">
+            <div class="hero-icon">👑</div>
+            <h1>On són els Reis?</h1>
+            <p class="tagline">Seguiment en temps real de la Cavalcada dels Reis Mags</p>
+            <a href="#contact" class="hero-cta">Demana informació ➜</a>
+        </div>
+    </header>
+
+    <section class="problem">
+        <div class="container">
+            <h2>La il·lusió dels més petits no pot esperar</h2>
+            <p class="problem-text">
+                Cada any, centenars de famílies busquen <span class="problem-highlight">on són els Reis Mags</span>. 
+                Truquen, pregunten, esperen al fred sense saber quan arribaran. 
+                <strong>Què passaria si poguessin seguir la Cavalcada en temps real des del sofà de casa?</strong>
+            </p>
+        </div>
+    </section>
+
+    <section class="benefits" id="beneficis">
+        <div class="container">
+            <h2>Què ofereix?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <span class="benefit-icon">📍</span>
+                    <h3>Ubicació en temps real</h3>
+                    <p>Segueix exactament on són els Reis Mags. Sense endevinar, sense esperar al fred.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">⏰</span>
+                    <h3>Calcula quan arriben</h3>
+                    <p>Saps exactament quan arribarà la Cavalcada al teu carrer. Temps per preparar-se.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">👨‍👩‍👧‍👦</span>
+                    <h3>Comoditat per a les famílies</h3>
+                    <p>Els nens petits poden esperar a casa calents fins que els Reis estiguin a prop.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">🎉</span>
+                    <h3>Més participació</h3>
+                    <p>Augmenta l'assistència i l'emoció quan tothom sap on són els Reis.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">📱</span>
+                    <h3>Fàcil d'usar</h3>
+                    <p>Només cal obrir el mòbil. Funciona des del navegador, sense instal·lar-hi res.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">📢</span>
+                    <h3>Comunicació eficient</h3>
+                    <p>Informa centenars de persones sense esforç. Mai més "on són ara?"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="funcionament">
+        <div class="container">
+            <h2>Com funciona?</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>T'ho instal·lem</h3>
+                    <p>Configurem tot el sistema per tu. Tu només has d'activar-lo el dia de la Cavalcada.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Porta el mòbil</h3>
+                    <p>Un organitzador porta l'app al mòbil durant la Cavalcada. Simple i automàtic.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Comparteix l'enllaç</h3>
+                    <p>Difon l'enllaç web als veïns per xarxes socials, WhatsApp o cartells.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Màgia assegurada</h3>
+                    <p>Les famílies segueixen els Reis en temps real i saben quan arribar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-final" id="contact">
+        <div class="container">
+            <h2>Ho vols per la teva Cavalcada?</h2>
+            <p>Contacta amb nosaltres i ho posem en marxa.</p>
+            <a href="mailto:hola@elstresreis.cat" class="btn-large">✉️ Contacta'ns ara</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-brand-icon">👑</span>
+                    <div class="footer-brand-text">
+                        <h3>Els Tres Reis</h3>
+                        <p>Seguiment en temps real</p>
+                    </div>
+                </div>
+                <div class="footer-contact">
+                    <a href="mailto:hola@elstresreis.cat">hola@elstresreis.cat</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© Els Tres Reis. Tots els drets reservats.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
